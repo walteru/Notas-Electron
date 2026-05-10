@@ -4,6 +4,8 @@ App de escritorio en **Electron** para gestionar notas Markdown organizadas por 
 
 Cada proyecto es un archivo `.md` dentro de la carpeta `proyectos/`, lo que hace que las notas sean **portables, versionables con git y editables con cualquier editor externo**.
 
+![Captura de pantalla de Notas Electron](screenshot.png)
+
 ## Características
 
 - Lista de proyectos en sidebar, ordenada alfabéticamente.
