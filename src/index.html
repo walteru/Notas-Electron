@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notas de Proyectos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <div id="title-bar">
+                <span id="app-title">Notas de Proyectos</span>
+                <span id="current-file"></span>
+            </div>
+        </header>
+
+        <main>
+            <aside id="sidebar">
+                <ul id="project-list"></ul>
+            </aside>
+
+            <section id="editor-container">
+                <div id="line-numbers"></div>
+                <div id="viewer" class="content-area"></div>
+                <textarea id="editor" class="content-area hidden" spellcheck="false"></textarea>
+                <div id="line-mirror"></div>
+            </section>
+        </main>
+
+        <footer>
+            <div id="status-bar">
+                <span class="key">q</span> Salir | 
+                <span class="key">n</span> Nueva nota | 
+                <span class="key">e</span> Editar | 
+                <span class="key">p</span> Nuevo proyecto | 
+                <span class="key">d</span> Eliminar | 
+                <span class="key">/</span> Buscar | 
+                <span class="key">r</span> Refrescar
+            </div>
+        </footer>
+
+        <!-- Search Modal -->
+        <div id="search-modal" class="modal hidden">
+            <div class="modal-content">
+                <input type="text" id="search-input" placeholder="Buscar en todos los proyectos...">
+                <ul id="search-results"></ul>
+                <div class="modal-footer">Esc: Cerrar | Enter: Ir</div>
+            </div>
+        </div>
+
+        <!-- Prompt Modal (New Project) -->
+        <div id="prompt-modal" class="modal hidden">
+            <div class="modal-content">
+                <h3 id="prompt-title">Nuevo Proyecto</h3>
+                <input type="text" id="prompt-input" placeholder="Nombre del proyecto...">
+                <div class="modal-footer">Esc: Cancelar | Enter: Crear</div>
+            </div>
+        </div>
+    </div>
+    <script src="renderer.js"></script>
+</body>
+</html>

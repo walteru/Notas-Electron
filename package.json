@@ -1,0 +1,31 @@
+{
+  "name": "notas-electron",
+  "version": "1.0.0",
+  "description": "App de escritorio en Electron para gestionar notas Markdown organizadas por proyectos, con interfaz tipo vim.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "electron",
+    "notas",
+    "markdown",
+    "notes",
+    "vim"
+  ],
+  "author": "Walter Rodriguez <wrodrig1977@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/walteru/Notas-Electron.git"
+  },
+  "bugs": {
+    "url": "https://github.com/walteru/Notas-Electron/issues"
+  },
+  "homepage": "https://github.com/walteru/Notas-Electron#readme",
+  "type": "commonjs",
+  "devDependencies": {
+    "electron": "^42.0.1"
+  }
+}
