@@ -53,7 +53,7 @@ function renderProjectList(selectName = null) {
     }
 }
 
-async function selectProject(project) {
+async function selectProject(project, highlightOpts = null) {
     // Si estábamos editando y había un guardado pendiente, lo forzamos
     if (state.autoSaveTimer) {
         clearTimeout(state.autoSaveTimer);
@@ -63,20 +63,61 @@ async function selectProject(project) {
     state.selectedProject = project;
     state.isEditing = false;
     state.dirty = false;
-    
+
     document.querySelectorAll('#project-list li').forEach(li => {
         li.classList.toggle('selected', li.textContent === project.name);
     });
 
     const content = await window.api.readNote(project.path);
     state.originalContent = content;
-    
+
     currentFileSpan.textContent = `> ${project.name}.md`;
-    viewer.textContent = content;
     viewer.classList.remove('hidden');
     editor.classList.add('hidden');
     editor.value = content;
+
+    if (highlightOpts) {
+        renderViewerWithHighlight(content, highlightOpts.line, highlightOpts.query);
+        // Limpiar el highlight tras la animación para no dejar HTML residual
+        setTimeout(() => {
+            if (!state.isEditing && state.selectedProject && state.selectedProject.path === project.path) {
+                viewer.textContent = content;
+            }
+        }, 2500);
+    } else {
+        viewer.textContent = content;
+    }
     updateLineNumbers();
+}
+
+// --- Search highlighting helpers ---
+
+function escapeHtml(s) {
+    return s.replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+}
+
+function highlightMatch(text, query) {
+    const escapedText = escapeHtml(text);
+    if (!query) return escapedText;
+    const escapedQuery = escapeHtml(query).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return escapedText.replace(new RegExp(escapedQuery, 'gi'), m => `<mark class="search-match">${m}</mark>`);
+}
+
+function renderViewerWithHighlight(content, lineNumber, query) {
+    const lines = content.split('\n');
+    const html = lines.map((line, idx) => {
+        if (idx === lineNumber - 1) {
+            return `<span class="line-highlight" id="search-highlight-line">${highlightMatch(line, query)}</span>`;
+        }
+        return escapeHtml(line);
+    }).join('\n');
+    viewer.innerHTML = html;
+    const target = document.getElementById('search-highlight-line');
+    if (target) target.scrollIntoView({ block: 'center' });
 }
 
 // --- Actions ---
@@ -225,18 +266,19 @@ async function performSearch() {
 }
 
 function renderSearchResults(results) {
+    const query = searchInput.value;
     searchResults.innerHTML = '';
     results.forEach(res => {
         const li = document.createElement('li');
         li.innerHTML = `
-            <div class="result-header">${res.file} (Línea ${res.line})</div>
-            <div class="result-text">${res.text}</div>
+            <div class="result-header">${escapeHtml(res.file)} (Línea ${res.line})</div>
+            <div class="result-text">${highlightMatch(res.text, query)}</div>
         `;
         li.onclick = () => {
             const project = state.projects.find(p => p.name === res.file);
             if (project) {
                 searchModal.classList.add('hidden');
-                selectProject(project);
+                selectProject(project, { line: res.line, query });
             }
         };
         searchResults.appendChild(li);
@@ -354,9 +396,8 @@ function setupEventListeners() {
 
         // Atajos en modo Vista
         switch(e.key.toLowerCase()) {
-            case 'q': e.preventDefault(); app.quit; break;
+            case 'q': e.preventDefault(); window.api.quitApp(); break;
             case 'n': e.preventDefault(); newNote(); break;
-            case 'e': e.preventDefault(); enterEditMode(); break;
             case 'p': e.preventDefault(); newProject(); break;
             case 'd': e.preventDefault(); deleteProject(); break;
             case '/': e.preventDefault(); showSearch(); break;

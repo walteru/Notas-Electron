@@ -114,6 +114,10 @@ ipcMain.handle('search-notes', async (event, query) => {
     return results;
 });
 
+ipcMain.handle('quit-app', () => {
+    app.quit();
+});
+
 ipcMain.handle('confirm-dialog', async (event, { title, message, buttons }) => {
     const result = await dialog.showMessageBox({
         type: 'question',
