@@ -7,6 +7,7 @@ contextBridge.exposeInMainWorld('api', {
     deleteNote: (fileName) => ipcRenderer.invoke('delete-note', fileName),
     searchNotes: (query) => ipcRenderer.invoke('search-notes', query),
     confirmDialog: (options) => ipcRenderer.invoke('confirm-dialog', options),
+    exportPdf: (fileName) => ipcRenderer.invoke('export-pdf', fileName),
     quitApp: () => ipcRenderer.invoke('quit-app'),
     zoomIn: () => {
         const z = Math.min(3, webFrame.getZoomFactor() + 0.1);

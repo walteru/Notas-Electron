@@ -398,6 +398,16 @@ function setupEventListeners() {
         switch(e.key.toLowerCase()) {
             case 'q': e.preventDefault(); window.api.quitApp(); break;
             case 'n': e.preventDefault(); newNote(); break;
+            case 'e': e.preventDefault(); enterEditMode(); break;
+            case 'x': 
+                e.preventDefault(); 
+                if (state.selectedProject) {
+                    window.api.exportPdf(state.selectedProject.name + '.md').then(success => {
+                        if (success) alert('PDF exportado correctamente');
+                        else alert('Exportación cancelada o fallida');
+                    });
+                }
+                break;
             case 'p': e.preventDefault(); newProject(); break;
             case 'd': e.preventDefault(); deleteProject(); break;
             case '/': e.preventDefault(); showSearch(); break;

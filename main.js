@@ -118,6 +118,30 @@ ipcMain.handle('quit-app', () => {
     app.quit();
 });
 
+ipcMain.handle('export-pdf', async (event, defaultName) => {
+    const win = BrowserWindow.fromWebContents(event.sender);
+    const { filePath } = await dialog.showSaveDialog(win, {
+        title: 'Exportar a PDF',
+        defaultPath: defaultName.replace(/\.md$/, '.pdf'),
+        filters: [{ name: 'PDF', extensions: ['pdf'] }]
+    });
+
+    if (filePath) {
+        try {
+            const pdfData = await win.webContents.printToPDF({
+                printBackground: true,
+                pageSize: 'A4'
+            });
+            fs.writeFileSync(filePath, pdfData);
+            return true;
+        } catch (error) {
+            console.error('Failed to write PDF', error);
+            return false;
+        }
+    }
+    return false;
+});
+
 ipcMain.handle('confirm-dialog', async (event, { title, message, buttons }) => {
     const result = await dialog.showMessageBox({
         type: 'question',

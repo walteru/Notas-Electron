@@ -259,3 +259,34 @@ footer {
 ::-webkit-scrollbar-thumb:hover {
     background: #444;
 }
+
+@media print {
+    header, footer, #sidebar, #line-numbers, #line-mirror, .modal {
+        display: none !important;
+    }
+    #editor-container {
+        overflow: visible !important;
+        height: auto !important;
+        display: block !important;
+        background: white !important;
+    }
+    .content-area {
+        overflow: visible !important;
+        height: auto !important;
+        padding: 0 !important;
+        color: black !important;
+        background: white !important;
+    }
+    body {
+        background: white !important;
+        color: black !important;
+        height: auto !important;
+        overflow: visible !important;
+    }
+    #viewer {
+        display: block !important;
+    }
+    #editor {
+        display: none !important;
+    }
+}

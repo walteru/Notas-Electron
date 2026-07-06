@@ -14,6 +14,7 @@ Cada proyecto es un archivo `.md` dentro de la carpeta `proyectos/`, lo que hace
 - Atajos de teclado tipo vim para navegar sin tocar el mouse.
 - Menú contextual nativo (cortar / copiar / pegar / deshacer / rehacer).
 - Zoom in / out / reset desde la API expuesta por `preload.js`.
+- Exportación a PDF de la nota activa sin los elementos de la interfaz.
 - Aislamiento de contexto activado (`contextIsolation: true`, `nodeIntegration: false`) — el renderer no tiene acceso directo a Node.
 
 ## Atajos de teclado
@@ -23,6 +24,7 @@ Cada proyecto es un archivo `.md` dentro de la carpeta `proyectos/`, lo que hace
 | `q`   | Salir             |
 | `n`   | Nueva nota        |
 | `e`   | Editar            |
+| `x`   | Exportar PDF      |
 | `p`   | Nuevo proyecto    |
 | `d`   | Eliminar          |
 | `/`   | Buscar            |
@@ -62,6 +64,11 @@ Las notas se guardan como archivos `.md` en `proyectos/`. Esa carpeta **no está
 ├── proyectos/       # Notas Markdown del usuario
 └── package.json
 ```
+
+## Artículo
+
+La implementación de la exportación a PDF nativa con Electron y CSS está explicada en detalle acá:
+[Exportación Nativa a PDF en Aplicaciones Electron](https://sincrodev.com/blog/exportar-pdf-nativo-electron/).
 
 ## Licencia
 
